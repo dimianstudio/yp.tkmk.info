@@ -1,0 +1,5 @@
+%div{:class => (rewiew.user.has_role?("admin") ? "rewiew-admin round-10" : "rewiew-row round-10"), :id => "rewiew_#{rewiew.id}"}
+  %div.rewiew-title
+    %div.rewiew-user= "#{ rewiew.user.has_role?("admin") ? "Администратор" : h(user_name(rewiew.user))}"
+    %div.rewiew-date= "#{Russian::strftime(rewiew.created_at, "%d %B %Y г.")}"
+  %div.rewiew-text{:style => "clear:left;"}= h(rewiew.text)

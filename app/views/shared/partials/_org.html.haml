@@ -1,0 +1,13 @@
+%div{:class => "org-box-#{cycle('even', 'odd') }"}
+  %h3= link_to org.name, org_path(org)
+  %div.adress
+    %span.town #{org.town.name}
+    - unless org.street.name.blank?
+      %span.street &#8594; ул. #{org.street.name}
+  %div.additional
+    %span.email.inactive E-mail    
+    - unless org.www.blank?
+      %span.www= link_to "Веб-сайт", org.www, :target => "_blank", :title => "Откроется в новом окне"
+    %span.rewiews= link_to "Отзывы", org_rewiews_path(org)
+    %span.user_area{:style => "display:none;"}
+      %span.favorite= link_to_remote "Добавить в избранное", {:url => org_favorites_path(org, :format => "js"), :method => "post"}, :href => org_favorites_path(org)

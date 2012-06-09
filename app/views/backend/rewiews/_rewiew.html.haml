@@ -1,0 +1,8 @@
+%div{:class => (rewiew.user.has_role?("admin") ? "rewiew-admin" : "rewiew-row"), :id => "rewiew_#{rewiew.id}"}
+  %div.rewiew-title
+    %div.left
+      = link_to "&nbsp;", edit_backend_rewiew_path(rewiew), :class => "edit", :title => "Редактировать отзыв"
+      = link_to "&nbsp;", backend_rewiew_path(rewiew), :class => "delete", :title => "Удалить отзыв", :method => "delete", :confirm => "Вы точно хотите удалить отзыв?"   
+    %div.left= "#{link_to rewiew.user.has_role?("admin") ? "Администратор" : user_name(rewiew.user), rewiews_backend_user_path(rewiew.user)} / #{date(rewiew.created_at)}"
+    %div.rewiew-org= "#{ link_to rewiew.org.name, backend_orgs_rewiews_path(rewiew.org)}"
+  %div.rewiew-text{:style => "clear:left;"}= h(rewiew.text)

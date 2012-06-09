@@ -1,0 +1,10 @@
+= title("Админка &#8594; Словари &#8594; Роли &#8594; " + @role.name + " &#8594; Редактирование")
+
+%div.container
+  = admin_menu("dictionaries")
+%div.container
+  %div.content
+    %h2 Роли
+    - form_for(:role, @role, :url => backend_role_path(@role), :html => {:method => "put"}) do |f|
+      = f.text_field :name
+      = submit_tag("Редактировать")

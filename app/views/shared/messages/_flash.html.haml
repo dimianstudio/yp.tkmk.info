@@ -1,0 +1,12 @@
+%div.flash_messages
+  %div#notice{:style => "display:none;"}
+    %span#title_s Сообщение
+    %span#content_s
+  %div#error{:style => "display:none;"}
+    %span#title_e Сообщение
+    %span#content_e
+%script{:type => "text/javascript", :charset => "utf-8"}
+  //<![CDATA[
+  Flash.transferFromCookies();  
+  Flash.writeDataTo('content_s', 'content_e');
+  //]]>

@@ -1,0 +1,18 @@
+= title("Админка &#8594; Словари &#8594; Категории &#8594; " + @category.name + " &#8594; Редактирование")
+
+%div.container
+  = admin_menu("dictionaries")
+%div.container
+  %div.content
+    %h2 Категории
+    - form_for(:category, @category, :url => backend_category_path(@category), :html => {:method => "put"}) do |f|
+      %dl
+        %dt= label(:category, :name, "Название")
+        %dd= f.text_field :name
+      - if @category.parent_id == 1
+        %span= hidden_field(:category, :parent_id)
+      - else
+        %dl
+          %dt= label(:category, :parent_id, "Категория")
+          %dd= select_category(@category.parent_id)
+      = submit_tag("Редактировать")

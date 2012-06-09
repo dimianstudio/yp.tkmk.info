@@ -1,0 +1,21 @@
+- title(h(@org.name) + ' &#8594; Карта')
+
+- content_for(:javascript) do
+  = google_map(@org.markers)
+
+%div.container
+  %div.content.round-10     
+    %h2= h(@org.name)
+    = org_menu("maps")
+    %div#map{:style => "width: 916px; height: 400px; margin:15px 0 16px 0;"}
+    %div.user_area.form{:style => "display:none"}
+      %h3 Добавить маркеры
+      %p.help Выберите точки на карте которые соответствуют местоположению этой организации (не более 3) и нажмите Добавить, после чего данные будут отправлены на проверку Администратору. В случае успешного прохождения модерации организация появится на карте в соотвествующих точках.
+      %div   
+        - form_tag create_org_maps_path(@org), :method => "post" do          
+          %div#markers
+          %dl.button
+            %dt= submit_tag("Добавить", :class => "button")
+            %dd
+  %div.guest_area{:style => "display:none"}
+    = auth_notice("Авторизуйтесь чтобы добавлять маркеры на карте")

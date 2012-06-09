@@ -1,0 +1,12 @@
+%div#h-tabs
+  %ul
+    %li{:id => ("current" if current == "cart")}= link_to "Карточка", backend_org_path(@org)
+    %li{:id => ("current" if current == "phones")}= link_to "Телефоны", backend_org_phones_path(@org)
+    %li{:id => ("current" if current == "activities")}= link_to "Виды деятельности", backend_org_activities_path(@org)
+    %li{:id => ("current" if current == "maps")}= link_to "Карта", backend_org_maps_path(@org)
+    %li{:id => ("current" if current == "images")}= link_to "Фото", backend_orgs_images_path(@org)
+    %li{:id => ("current" if current == "rewiews")}= link_to "Отзывы", backend_orgs_rewiews_path(@org)
+    %li{:id => ("current" if current == "tags")}= link_to "Тэги", backend_orgs_associations_path(@org)
+    %li{:id => ("current" if current == "requests")}= link_to "Запросы", backend_orgs_requests_path(@org)
+    %li{:id => ("current" if current == "delete")}= link_to "Удалить", backend_org_path(@org), :method => "delete", :confirm => "Вы точно хотите удалить организацию?"
+%div#h-tabsline{:style => "margin-bottom:15px;"}

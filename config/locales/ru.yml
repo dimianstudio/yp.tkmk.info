@@ -1,0 +1,27 @@
+ru:
+  add:                          Добавление
+  edit:                         Редактирование
+  delete:                       Удаление  
+  org:                          организации
+  phone:                        телефона
+  activity:                     вида деятельности
+  marker:                       точки на карте
+  approved:                     Утвержден
+  not_approved:                 Не утвержден
+  activerecord:
+    attributes:
+      user: 
+        login:                  Имя
+        email:                  E-mail
+        password:               Пароль
+        password_confirmation:  Подтверждение
+    errors:
+      template:
+        header:
+          one:   "Извините но возникла ошибка"
+          few:   "Извините но возникли ошибки"
+          many:  "Извините но возникли ошибки"
+          other: "Извините но возникли ошибки"
+    
+  
+  

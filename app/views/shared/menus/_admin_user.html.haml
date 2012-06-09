@@ -1,0 +1,8 @@
+%div#h-tabs
+  %ul
+    %li{:id => ("current" if current == "profile")}= link_to "Профиль", backend_user_path(@user)
+    %li{:id => ("current" if current == "rights")}= link_to "Роли", rights_backend_user_path(@user)
+    %li{:id => ("current" if current == "orgs")}= link_to "Организации", orgs_backend_user_path(@user)
+    %li{:id => ("current" if current == "requests")}= link_to "Запросы", requests_backend_user_path(@user)
+    %li{:id => ("current" if current == "rewiews")}= link_to "Отзывы", rewiews_backend_user_path(@user)    
+%div#h-tabsline{:style => "margin-bottom:15px;"}

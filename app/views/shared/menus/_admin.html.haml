@@ -1,0 +1,28 @@
+- cache("admin_menu_#{current}") do
+  %ul#nav
+    %li{:class => ("current" if current == "main")}
+      = link_to "Главная", admin_path
+    %li{:class => ("current" if current == "databases")}
+      = link_to "Базы данных"
+      %ul
+        %li
+          = link_to "Организации", backend_orgs_path
+          %ul
+            %li= link_to "Добавить", new_backend_org_path
+        %li= link_to "Запросы", backend_requests_path
+        %li= link_to "Фото", backend_requests_path
+        %li= link_to "Отзывы", backend_rewiews_path
+        %li= link_to "Ассоциации", backend_associations_path
+        %li= link_to "Избранное", backend_favorites_path
+    %li{:class => ("current" if current == "dictionaries")}
+      = link_to "Словари"
+      %ul
+        %li= link_to "Населенные пункты", backend_towns_path
+        %li= link_to "Улицы", backend_streets_path
+        %li= link_to "Категории", backend_categories_path
+        %li= link_to "Тэги", backend_tags_path
+        %li= link_to "Права доступа", backend_roles_path
+    %li{:class => ("current" if current == "users")}
+      = link_to "Пользователи", backend_users_path
+    %li{:class => ("current" if current == "settings")}
+      = link_to "Настройки", backend_settings_path

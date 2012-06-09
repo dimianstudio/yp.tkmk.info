@@ -1,0 +1,6 @@
+- cache("phone_row") do  
+  %div.phone_row
+    %div.department.tip{:title => "Укажите по желанию названия отдела или должность владельца телефона"}
+      = text_field 'phone', 'department', {:name => "phones[][department]"}
+    %div.number.tip{:title => "Телефон (без тире и длиной от 3 до 11 цифр)"}
+      = text_field 'phone', 'number', {:name => "phones[][number]"}

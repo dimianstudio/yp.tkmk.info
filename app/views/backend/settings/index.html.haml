@@ -1,0 +1,13 @@
+= title("Админка &#8594; Настройки")
+
+%div.container
+  = admin_menu("settings")
+%div.container
+  %div.content    
+    %h2 Настройки
+    - form_tag(update_backend_settings_path, :method => :put) do
+      - @settings.each_pair do |key, value|
+        %dl
+          %dt= label_tag "setting[" + key + "]", key
+          %dd= text_field_tag "setting[" + key + "]", value
+      = submit_tag("Редактировать", :class => "button")

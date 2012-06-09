@@ -1,0 +1,63 @@
+- title(@org.name)
+
+- if @org.markers.size > 0
+  - content_for(:javascript) do
+    = google_map(@org.markers, false)
+- if @org.images.size > 0
+  - content_for(:javascript) do
+    %script{:type => "text/javascript", :charset => "utf-8"}
+      = "var tb_pathToImage = '#{image_path("loadingAnimation.gif")}'"; 
+    = javascript_include_tag "jquery-thickbox"
+
+%div.container
+  %div.content.clearfix.round-10   
+    %h2= @org.name
+    = org_menu("cart")
+    %div.page.clearfix
+      %div.cart
+        %fieldset{:class => ("last" if @org.categories.blank? && @org.description.blank? && @org.phones.blank? && @org.email.blank? && @org.www.blank? )}
+          %legend Адрес
+          %div.town <strong>Город</strong>: #{@org.town.name}
+          - unless @org.street.name.blank?
+            %div.street <strong>Улица</strong>: #{@org.street.name}
+          - unless @org.house.blank?
+            %div.house <strong>Дом</strong>: #{@org.house}
+        - unless @org.phones.blank? && @org.email.blank? && @org.www.blank?
+          %fieldset.contacts{:class => ("last" if @org.categories.blank? && @org.description.blank? )}
+            %legend Контакты
+            - unless @org.phones.blank?
+              = link_to "Позвонить", org_phones_path(@org), :title => "Посмотреть телефоны", :class => "phone"
+            - unless @org.email.blank?
+              = mail_to @org.email, "Написать письмо", :encode => "hex", :class => "email"
+            - unless @org.www.blank?
+              = link_to "Посетить веб-сайт", @org.www, :target => "_blank", :title => "Откроется в новом окне", :class => "www"
+        - unless @org.categories.blank?
+          %fieldset{:class => ("last" if @org.description.blank? )}
+            %legend Вид деятельности
+            %table#higlight_table
+              %colgroup
+                %col
+              %tbody
+                - @org.categories.each do |category|
+                  %tr
+                    %td= "#{category.parent.name} &#8594; #{link_to category.name, category_path(category)}"
+        - unless @org.images.blank?
+          %fieldset
+            %legend Фото
+            %div.images
+              - @org.images[0..3].each_with_index do |image, i|
+                - class_str = "thickbox"
+                - class_str << " last"  if (i+1)%4 == 0
+                = link_to image_tag( image.image.url(:small), :width => '162' ), image_path( image.image.url(:original) ), :class => class_str
+        - unless @org.description.blank?
+          %fieldset.last
+            %legend Описание
+            %span= @org.description
+        - if @org.markers.size > 0
+          %div#map{:style => "width: 700px; height: 450px; margin-bottom:16px;"}
+      - if @org.image.file?
+        %div.org_adv{:style=> "background:none;margin-top:3px;"}= link_to image_tag(@org.image.url, :alt => @org.name, :class => "org_adv"), @org.image_link, :target => "_blank", :title => @org.name
+      - else
+        %div.org_adv
+          = link_to "&nbsp;", advertising_path, :title => "Размещение рекламы"
+          %div

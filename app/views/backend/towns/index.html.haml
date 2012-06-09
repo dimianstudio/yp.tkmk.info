@@ -1,0 +1,40 @@
+= title("Админка &#8594; Словари &#8594; Населенные пункты")
+
+%div.container
+  = admin_menu("dictionaries")
+%div.container
+  %div.content    
+    %h2 Населенные пункты
+    - if @towns.total_entries > 0
+      %p= "В словаре <strong>#{@towns.total_entries}</strong> #{Russian.p(@towns.total_entries, "населенный пункт", "населенные пункта", "населенных пунктов")}"
+      %table#higlight_table
+        %colgroup
+          %col
+          %col{:width => "70%"}
+          %col{:width => "5%"}        
+          %col{:width => "10%"}
+          %col{:width => "10%"}
+        %tbody
+          - @towns.each do |town|
+            %tr
+              %td
+                %span= link_to "&nbsp;", edit_backend_town_path(town), :class => "edit", :title => "Редактировать населенный пункт"
+                - if town.orgs.size == 0
+                  %span= link_to "&nbsp;", backend_town_path(town), :class => "delete", :title => "Удалить населенный пункт", :method => "delete", :confirm => "Вы точно хотите удалить населенный пункт?"
+              %td= link_to h(town.name), edit_backend_town_path(town), :title => "Редактировать населенный пункт"
+              %td
+                %span.link= link_to town.orgs.size, backend_town_path(town), :title => "Организации в этом населенном пункте..."
+              %td{:style => "text-align:right;"}
+                %span.date_create= Russian::strftime(town.created_at, "%d.%m.%Y")
+              %td{:style => "text-align:right;"}
+                %span.date_update= Russian::strftime(town.updated_at, "%d.%m.%Y")
+      = will_paginate(@towns)
+    - else
+      %p В словаре нет ни одного населенного пункта
+    %div.separator
+    %div
+      %h3 Добавить населенный пункт
+      - form_tag backend_towns_path, :method => "post" do
+        = text_field 'town', 'name'
+        = submit_tag("Добавить")
+          

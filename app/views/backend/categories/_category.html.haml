@@ -1,0 +1,8 @@
+%li{:class => "#{(category_counter == 0 ? 'active' : 'non_active')}", :id => "category_#{category.id}", :style => "clear:left;"}
+  %div{:style => "float:left;width:40px;"}  
+    %span= link_to "&nbsp;", edit_backend_category_path(category), :class => "edit", :title => "Редактировать категорию"
+    - if category.children.size == 0
+      %span= link_to "&nbsp;", backend_category_path(category), :class => "delete", :title => "Удалить категорию", :method => "delete", :confirm => "Вы точно хотите удалить категорию?"
+  %div{:style => "float:left;"}
+    = link_to_remote truncate(category.name, :length => 35), {:url => backend_category_path(category, :format => "js"), :method => :get}, :href => backend_category_path(category)
+= drop_receiving_element("category_#{category.id}",:with => "'id=' + element.id.split('_').last()",:url => { :action => 'restructure', :category_id => category.id, :format => "js" }, :hoverclass => "highlight")

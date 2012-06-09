@@ -1,0 +1,24 @@
+= title("Админка &#8594; Пользователи &#8594; " + @user.name + " &#8594; Организации")
+
+%div.container
+  = admin_menu("users")
+%div.container
+  %div.content    
+    %h2= @user.login
+    = admin_user_menu("orgs")
+    - if @orgs.total_entries > 0  
+      %p= "Пользователь создал <strong>#{@orgs.total_entries}</strong> #{Russian.p(@orgs.total_entries, "организация", "организации", "организаций")}"
+      %table#higlight_table
+        %colgroup
+          %col
+          %col{:width => "47%"}
+          %col{:width => "11%"}
+          %col{:width => "12%"}
+          %col{:width => "7%"}
+          %col{:width => "9%"}      
+          %col{:width => "9%"}
+        %tbody
+          = render :partial => "backend/orgs/org", :collection => @orgs
+      = will_paginate(@orgs, :class => "pagination round-bottom-10")
+    - else
+      %p Пользователь не создавал организации

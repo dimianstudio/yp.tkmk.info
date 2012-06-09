@@ -1,0 +1,22 @@
+= title("Админка &#8594; Пользователи &#8594; " + @user.name + " &#8594; Запросы")
+
+%div.container
+  = admin_menu("users")
+%div.container
+  %div.content    
+    %h2= @user.login
+    = admin_user_menu("requests")
+    - if @requests.total_entries > 0 
+      %p= "Пользователь создал <strong>#{@requests.total_entries}</strong> #{Russian.p(@requests.total_entries, "запрос", "запроса", "запросов")}" 
+      %table#higlight_table
+        %colgroup
+          %col
+          %col{:width => "70%"}
+          %col{:width => "10%"}
+          %col{:width => "5%"}      
+          %col{:width => "10%"}
+        %tbody
+          = render :partial => "backend/requests/request", :collection => @requests
+      = will_paginate(@requests, :class => "pagination round-bottom-10")
+    - else
+      %p Пользователь не создал не одного запроса

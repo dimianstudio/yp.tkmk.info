@@ -1,0 +1,10 @@
+= title("Админка &#8594; Словари &#8594; Отзывы &#8594; Редактирование")
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content
+    %h2 Отзывы
+    - form_for(:rewiew, @rewiew, :url => backend_rewiew_path(@rewiew), :html => {:method => "put"}) do |f|
+      = f.text_area :text, :rows => 5
+      = submit_tag("Редактировать")

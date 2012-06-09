@@ -1,0 +1,8 @@
+%div.section-box.span-7.last{:style => "margin-bottom:15px;"}
+  %ul#tabs
+    = render :partial => 'category', :collection => @categories  
+%div.subsection-box.span-16
+  %div.subsection-content
+    %div#tab_content
+      %ul
+        = render :partial => 'subcategory', :collection => @subcategories

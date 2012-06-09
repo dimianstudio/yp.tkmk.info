@@ -1,0 +1,11 @@
+- title('Контакты')
+
+%div.container
+  %div.content.round-10
+    %h2 Контакты
+    %ul
+      %li E-mail: #{mail_to APP_CONFIG['admin_email'], APP_CONFIG['admin_email'], :encode => "hex"}
+      %li тел.: 0 (68) 928-43-21
+      %li= "ICQ: #{link_to "457544616", "http://www.icq.com/people/457544616", :target => "_blank"}"
+      %li= "Skype: #{link_to "dimianstudio", "callto://dimianstudio"}"
+      %li= "Twitter: #{link_to "yp_tkmk", "http://twitter.com/yp_tkmk", :target => "_blank"}"

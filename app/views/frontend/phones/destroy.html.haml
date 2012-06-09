@@ -1,0 +1,20 @@
+- title(h(@org.name) + ' &#8594; Телефоны &#8594; Удаление')
+
+%div.container
+  %div.content.round-10
+    %h2= h(@org.name)
+    = org_menu("phones")
+    %h3 Удалить телефон
+    %p.help Введите краткое сообщение с причиной по которой вы решили удалить этот телефонный номер. После рассмотрения вашего запроса Администратор приймет решение об удалении телефона из базы. ВАЖНО!!! Проверьте на предмет правильности свой e-mail адрес, в случае его некоректности запрос рассматриватся не будет.
+    %div.remove-info 
+      %p.title Данные для удаления
+      %p Название организации: #{h(@org.name)}
+      %p= "<strong>Отдел:</strong> #{h(@phone.department)}" if !@phone.department.blank?
+      %p= "<strong>Номер телефона:</strong> #{h(@phone.number)}"
+    %div 
+      %p !!! Обязательно введите причину удаления (в противном случае запрос будет отклонен)  
+      - form_tag delete_org_phone_path(:org_id => @org.id, :id => @phone.id), :method => "delete" do
+        %div.tip.required{:title => "Обязательно напишите причину удаления"}= text_area 'request', 'msg', :rows => 3
+        %dl.button
+          %dt= submit_tag("Удалить", :class => "button")  
+          %dd= back_link(:back)

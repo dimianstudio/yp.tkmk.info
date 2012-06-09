@@ -1,0 +1,14 @@
+- @categories.each_with_index do |category,i|
+  %div.categories
+    - class_str = ""
+    - class_str << ' first round-top-10' if i==0
+    - class_str << ' last round-bottom-10' if i==@categories.size-1
+    = link_to truncate(category.name,:length => 35), "/categories#", :title => category.name,:id => "category_#{category.id}", :class => "header_tab#{class_str.to_s}"
+    %div.subcategories
+      - category.children.each_with_index do |subcategory,y|
+        - class_str = ""
+        - class_str << 'active' if subcategory.id == @current
+        - class_str << 'first'  if y==0
+        - class_str << 'last'   if y==category.children.size-1
+        - class_str << ' end round-bottom-10'   if (i==@categories.size-1) and (y==category.children.size-1)
+        = link_to truncate(subcategory.name,:length => 35), category_path(subcategory), :class => (class_str.to_s if !class_str.blank?), :title => subcategory.name

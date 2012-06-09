@@ -1,0 +1,6 @@
+page.replace_html "title_s", "Избранное"
+page.replace_html "content_s", msg
+page.toggle "notice"
+page.delay(3) do
+  page.toggle "notice"
+end

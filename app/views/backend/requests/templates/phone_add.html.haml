@@ -1,0 +1,25 @@
+= title("Админка &#8594; Базы данных &#8594; Запросы &#8594; Добавление телефона")
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2 Запрос на добавление телефона
+    %p= "<strong>Организация</strong>: #{link_to @request.org.name, backend_org_phones_path(:org_id => @request.org_id), :target => "_blank"}<br /><strong>Пользователь</strong>: #{link_to user_name(@request.user), requests_backend_user_path(@request.user), :target => "_blank" }"
+    - form_tag backend_request_path(@request), :method => "put" do
+      %div#phones
+        - @phones.each_with_index do |p,i|
+          %div.phone_row
+            %div.department
+              = text_field 'phone', 'department', {:name => "phones[][department]", :value => p[:department], :id => "phone_department_#{i}"}
+            %div.number
+              = text_field 'phone', 'number', {:name => "phones[][number]", :value => p[:number], :id => "phone_number_#{i}"}
+      %dl{:style => "height:60px;"}
+        %dt= label(:request, :comment, "Комментарий")
+        %dd= text_area :request, :comment, :rows => 3
+      %dl
+        %dt= label(:request, :approved, "Утвердить?")
+        %dd= check_box :request, :approved
+      %dl
+        %dt= submit_tag("Утвердить", :class => "button")
+        %dd= back_link(:back)

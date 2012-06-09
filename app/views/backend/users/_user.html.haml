@@ -1,0 +1,9 @@
+%tr
+  %td= link_to "&nbsp;", backend_user_path(user), :class => "edit", :title => "Редактировать пользователя"
+  %td= link_to h(user.login), backend_user_path(user), :title => "Редактировать пользователя"
+  %td= link_to h(user.name), backend_user_path(user), :title => "Редактировать пользователя"
+  %td= h(user.email)
+  %td{:style => "text-align:right;"}
+    %span.date_create= Russian::strftime(user.created_at, "%d.%m.%Y")
+  %td{:style => "text-align:right;"}
+    %span.date_update= Russian::strftime(user.updated_at, "%d.%m.%Y")

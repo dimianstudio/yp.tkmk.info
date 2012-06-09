@@ -1,0 +1,44 @@
+= title("Админка &#8594; Базы данных &#8594; Организации &#8594; " + @org.name + " &#8594; Телефоны")
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2= @org.name
+    = admin_org_menu("phones")
+    - if @phones.total_entries > 0
+      %p= "Организация имеет <strong>#{@phones.total_entries}</strong> #{Russian.p(@phones.total_entries, "телефон", "телефона", "телефонов")}"
+      %table#higlight_table{:style => "margin-bottom:0;"}
+        %colgroup
+          %col
+          %col{:width => "64%"}         
+          %col.phones
+          %col{:width => "10%"}
+          %col{:width => "10%"}
+        %tbody
+          - @phones.each do |phone|
+            %tr
+              %td
+                %span= link_to "&nbsp;", edit_backend_org_phone_path(:org_id => phone.org_id, :id => phone.id), :class => "edit", :title => "Редактировать телефон"
+                %span= link_to "&nbsp;", backend_org_phone_path(:org_id => phone.org_id, :id => phone.id), :class => "delete", :title => "Удалить телефон", :method => "delete", :confirm => "Вы точно хотите удалить телефон?"
+              %td= link_to phone.department.blank? ? "Нет названия": truncate(phone.department, :length => 50), edit_backend_org_phone_path(:org_id => phone.org_id, :id => phone.id), :title => "Редактировать телефон"
+              %td{:style => "text-align:center;"}= h(phone.number)
+              %td{:style => "text-align:right;"}
+                %span.date_create= Russian::strftime(phone.created_at, "%d.%m.%Y")
+              %td{:style => "text-align:right;"}
+                %span.date_update= Russian::strftime(phone.updated_at, "%d.%m.%Y")
+      = will_paginate(@phones)
+    - else
+      %p У данной организации нет телефонов
+    %div.separator
+    %div
+      %h3 Добавить телефон
+      %div   
+        - form_tag backend_org_phones_path(@org), :method => "post" do
+          %dl
+            %dt= label(:phone, :department, "Название отдела")
+            %dd= text_field 'phone', 'department'
+          %dl
+            %dt= label(:phone, :number, "Номер телефона")
+            %dd= text_field 'phone', 'number'  
+          = submit_tag("Добавить")

@@ -1,0 +1,8 @@
+page.replace_html "tab_content", render(:partial => "show_output", :locals => {:categories => categories})
+page << "el = Element.childElements('tabs')
+el.collect(function(item) {
+  if (Element.hasClassName(item, 'active')){
+    Element.removeClassName(item, 'active')
+  }  
+})"
+page.call "Element.addClassName", "category_#{category_id}", "active"

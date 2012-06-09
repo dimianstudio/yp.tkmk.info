@@ -1,0 +1,64 @@
+# NOTE Copy this to your home folder as .autotest
+#
+# Originally from http://wincent.com/knowledge-base/Setti … _use_Growl
+#
+# Modifications:
+#   * Minor refactoring to use .autotest_images directory
+#     [Geoffrey Grosenbach http://peepcode.com]
+#   * Test::Unit compatibility [Pat Nakajima]
+#
+module Autotest::Growl
+
+AUTOTEST_IMAGE_ROOT = "/volumes/SERVER/growl_images/"
+
+def self.growl title, msg, img, pri=0, sticky=""
+   system "growlnotify -n autotest --image #{img} -p #{pri} -m #{msg.inspect} #{title} #{sticky}"
+end
+
+def self.growl_fail(output)
+   growl "FAIL", "#{output}", "#{AUTOTEST_IMAGE_ROOT}/rails_fail.png", 2
+end
+
+def self.growl_pending(output)
+   growl "PENDING", "#{output}", "#{AUTOTEST_IMAGE_ROOT}/pending.png", 2
+end
+
+def self.growl_pass(output)
+   growl "PASS", "#{output}", "#{AUTOTEST_IMAGE_ROOT}/rails_ok.png"
+end
+
+Autotest.add_hook(:initialize) {|at|
+  at.add_exception %r{^\.git}  # ignore Version Control System
+  at.add_exception %r{^./tmp}  # ignore temp files, lest autotest will run again, and again...
+  at.clear_mappings         # take out the default (test/test*rb)
+  at.add_mapping(%r{^lib/.*\.rb$}) {|f, _|
+    Dir['spec/**/*.rb']
+  }
+  nil
+}
+
+Autotest.add_hook :ran_command do |at|
+
+   results = [at.results].flatten.join("\n")
+
+   if results.include? 'tests'
+     output = results.slice(/(\d+)\s+tests?,\s*(\d+)\s+assertions?,\s*(\d+)\s+failures?(,\s*(\d+)\s+errors)?/)
+     if output
+       $~[3].to_i + $~[5].to_i > 0 ? growl_fail(output) : growl_pass(output)
+     end
+   else
+     # output = results.slice(/(\d+)\s+examples?,\s*(\d+)\s+failures?(,\s*(\d+)\s+not implemented)?/)
+     output = results.slice(/(\d+)\s+examples?,\s*(\d+)\s+failures?(,\s*(\d+)\s+pending)?/)
+     if output  =~ /[1-9]\sfailures?/
+       growl_fail(output)
+     elsif output  =~ /[1-9]\spending?/
+       growl_pending(output)
+     else
+       growl_pass(output)
+     end
+     # if output
+     #   $~[2].to_i > 0 ? growl_fail(output) : growl_pass(output)
+     # end
+   end
+end
+end

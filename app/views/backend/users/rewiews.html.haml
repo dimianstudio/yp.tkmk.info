@@ -1,0 +1,14 @@
+= title("Админка &#8594; Пользователи &#8594; " + @user.name + " &#8594; Отзывы")
+
+%div.container
+  = admin_menu("users")
+%div.container
+  %div.content    
+    %h2= @user.login
+    = admin_user_menu("rewiews")
+    - if @rewiews.total_entries > 0  
+      %p= "Пользователь оставил <strong>#{@rewiews.total_entries}</strong> #{Russian.p(@rewiews.total_entries, "отзыв", "отзыва", "отзывов")}"
+      = render :partial => "backend/rewiews/rewiew", :collection => @rewiews  
+      = will_paginate(@rewiews, :class => "pagination round-bottom-10")
+    - else
+      %p Пользователь ничего не комментировал

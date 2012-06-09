@@ -1,0 +1,82 @@
+= title("Админка &#8594; Базы данных &#8594; Организации &#8594; Добавление")
+
+- content_for(:javascript) do
+  = javascript_include_tag "jquery-wysiwyg"
+  %script{:type => "text/javascript", :charset => "utf-8"}
+    //<![CDATA[
+    jQuery(function(){
+    jQuery('#wysiwyg').wysiwyg({
+    controls: {
+    strikeThrough : { visible : false },
+    indent : { visible : false },
+    outdent : { visible : false },
+    insertImage : { visible : false },
+    separator06 : { visible : false }
+    }
+    });    
+    });
+    //]]  
+- content_for(:css) do
+  = stylesheet_link_tag "wysiwyg", :media => "screen, projection"
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2 Добавление организации
+    - form_tag backend_orgs_path, :method => "post" do
+      %h3 Общая информация
+      %dl
+        %dt= label(:org, :name, "Название")
+        %dd= text_field 'org', 'name'
+      %dl{:style => "height:190px;"}
+        %dt= label(:org, :description, "Описание")
+        %dd= text_area 'org', 'description', :rows => 3, :id => "wysiwyg"
+      %dl
+        %dt= label(:org, :town_id, "Город")
+        %dd
+          - cache("select_towns") do
+            = select "org", "town_id", Town.find(:all, :order => "name ASC").collect { |t| [t.name, t.id] }, { :include_blank => true }
+      %dl
+        %dt= label(:org, :street_id, "Улица")
+        %dd
+          - cache("select_streets") do
+            = select "org", "street_id", Street.find(:all, :order => "name ASC").collect { |s| [s.name, s.id] }, { :include_blank => true }
+      %dl
+        %dt= label(:org, :house, "Дом")
+        %dd= text_field 'org', 'house'
+      %dl
+        %dt= label(:org, :email, "E-mail")
+        %dd= text_field 'org', 'email'
+      %dl
+        %dt= label(:org, :www, "Веб-сайт")
+        %dd= text_field 'org', 'www'
+      %h3 Виды деятельности
+      = text_field_tag 'search', nil, :style => "margin-bottom:10px;"
+      %span.requirement &#8592; Чтобы отфильтровать только определенные категории, введите пару начальных букв
+      %script{:type => "text/javascript", :charset => "utf-8"}
+        //<![CDATA[
+        jQuery('#search').keyup(function() {
+        var val = jQuery(this).val()  
+        if (val == '')
+        {
+        jQuery('p.category').css("display","block");
+        jQuery('span.subcategory').css("display","block");  
+        } 
+        else
+        {
+        jQuery('p.category').css("display","none");
+        jQuery('span.subcategory').css("display","none");
+        jQuery('span.subcategory[title*=' + val + ']').css("display","block");
+        }        
+        });
+        //]]
+      - cache("multiple_select_categories") do
+        = multiple_select_categories
+      %h3 Телефоны        
+      %div#phones
+        = link_to_remote "+ Добавить строку", {:url => add_phone_path(:format => "js"), :method => :get}
+        = render :partial => "shared/elements_form/enter_phones"
+      %dl
+        %dt=submit_tag("Добавить", :class => "button")
+        %dd

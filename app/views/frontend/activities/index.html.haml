@@ -1,0 +1,50 @@
+- title(h(@org.name) + ' &#8594; Виды деятельности')
+
+%div.container
+  %div.content.round-10     
+    %h2= h(@org.name)
+    = org_menu("activities")
+    - if @categories.length > 0
+      %table#higlight_table{:style => "margin:15px 0;"}
+        %colgroup
+          %col{:width => "98%"}
+          %col
+        %tbody
+          - @categories.each do |category|
+            %tr
+              %td= "#{h(category.parent.name)} &#8594; #{link_to h(category.name), category_path(category)}"
+              %td
+                %span.user_area{:style => "display:none;"}= link_to "&nbsp;", org_activity_path(:org_id => @org.id, :id => category.id), :method => "delete", :class => "delete", :confirm => "Вы точно хотите сделать запрос на удаление вида дейтельности?", :title => "Удалить вид деятельности"
+    - else
+      %p Предприятие ничем не занимается? Может Вы знаете? Тогда добавьте виды деятельности в форме ниже ;)
+    %div.user_area.form{:style => "display:none"}
+      %h3 Добавить виды деятельности
+      %p.help{:style => "margin:3px 0"} Отметьте категории в которых вы хотите видеть организацию (<strong>не более 5</strong>) и нажмите Добавить, после чего данные будут отправлены на проверку Администратору. В случае успешного прохождения модерации выбранные Вами виды деятельности будут присвоены организации.
+      = text_field_tag 'search', nil
+      %span.requirement &#8592; Чтобы отфильтровать только определенные категории, введите пару начальных букв
+      %script{:type => "text/javascript", :charset => "utf-8"}
+        //<![CDATA[
+        jQuery('#search').keyup(function() {
+        var val = jQuery(this).val()  
+        if (val == '')
+        {
+        jQuery('p.category').css("display","block");
+        jQuery('span.subcategory').css("display","block");  
+        } 
+        else
+        {
+        jQuery('p.category').css("display","none");
+        jQuery('span.subcategory').css("display","none");
+        jQuery('span.subcategory[title*=' + val + ']').css("display","block");
+        }        
+        });
+        //]]
+      %div   
+        - form_tag create_org_activities_path(@org), :method => "post" do
+          - cache("multiple_select_categories") do
+            = multiple_select_categories
+          %dl.button
+            %dt= submit_tag("Добавить", :class => "button")
+            %dd
+  %div.guest_area{:style => "display:none"}
+    = auth_notice("Авторизуйтесь чтобы добавлять или удалять виды деятельности")

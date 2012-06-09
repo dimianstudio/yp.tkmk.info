@@ -1,0 +1,63 @@
+- title(@org.name + ' &#8594; Запрос на редактирование')
+
+- content_for(:javascript) do
+  = javascript_include_tag "jquery-wysiwyg"
+  %script{:type => "text/javascript", :charset => "utf-8"}
+    //<![CDATA[
+    jQuery(function(){
+    jQuery('#wysiwyg').wysiwyg({
+    controls: {
+    strikeThrough : { visible : false },
+    indent : { visible : false },
+    outdent : { visible : false },
+    insertImage : { visible : false },
+    separator06 : { visible : false }
+    }
+    });    
+    });
+    //]]  
+- content_for(:css) do
+  = stylesheet_link_tag "wysiwyg", :media => "screen, projection"
+
+%div.container
+  %div.content.edit_org.round-10
+    %h2= @org.name
+    = org_menu("edit")
+    %p.help Внесите необходимые изменения и нажмите кнопку Редактировать, после чего данные будут отправлены на проверку Администратору. В случае успешного прохождения модерации изменения будут внесены в базу.
+    - form_for(:org, @org, :url => update_org_path(@org), :html => {:method => "put"}) do |f|
+      %dl.required
+        %dt= label(:org, :name, "Название")
+        %dd
+          = f.text_field :name
+          %span.requirement &#8592; Название организации - желательно сокращенное
+      %dl{:style => "height:190px;"}
+        %dt= label(:org, :description, "Описание")
+        %dd= f.text_area :description, :rows => 3, :id => "wysiwyg"
+      %dl.required
+        %dt= label(:org, :town_id, "Город")
+        %dd
+          = f.select :town_id, Town.find(:all, :order => "name ASC").collect { |t| [t.name, t.id] }
+          %span.requirement &#8592; В каком городе работает организация
+      %dl.required
+        %dt= label(:org, :street_id, "Улица")
+        %dd
+          = f.select :street_id, Street.find(:all, :order => "name ASC").collect { |s| [s.name, s.id] }
+          %span.requirement &#8592; По какой улице находится организация
+      %dl.required
+        %dt= label(:org, :house, "Дом")
+        %dd
+          = f.text_field :house
+          %span.requirement &#8592; Номер дома
+      %dl
+        %dt= label(:org, :email, "E-mail")
+        %dd
+          = f.text_field :email
+          %span.requirement &#8592; E-mail адрес организации (напр. - user@example.com)
+      %dl
+        %dt= label(:org, :www, "Веб-сайт")
+        %dd
+          = f.text_field :www
+          %span.requirement &#8592; Адрес web-сайта организации (напр. - http://www.example.com)
+      %dl.button
+        %dt=submit_tag("Редактировать", :class => "button")
+        %dd= back_link(:back)

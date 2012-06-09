@@ -1,0 +1,4 @@
+- cache("admin_search") do
+  - form_tag backend_search_index_path, :method => :get do
+    = text_field_with_auto_complete :tag, :name, {:size => 30, :name => "query"}, {:url => search_auto_complete_path, :method => :get, :skip_style => true}
+    = submit_tag "Поиск", :name => nil, :id => "searchform_submit"

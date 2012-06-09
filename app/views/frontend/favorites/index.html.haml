@@ -1,0 +1,16 @@
+- title('Личный кабинет  &#8594; Избранное')
+
+%div.container.span-17
+  %div.content.round-10   
+    %h2 Избранное    
+    - cache("favorite/user_#{current_user.id}/page_#{params[:page] || 1}") do
+      = user_menu("favorites")
+      %div
+        - if @favorites.total_entries > 0
+          = render(:partial => "favorite", :collection => @favorites)
+          = will_paginate(@favorites, :class => "pagination round-bottom-10")          
+        -else
+          %p У Вас нет ничего в Избранном
+%div.span-7.last
+  - cache("service_stat") do
+    = stat_panel

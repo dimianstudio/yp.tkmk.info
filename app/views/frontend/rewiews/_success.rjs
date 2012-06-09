@@ -1,0 +1,8 @@
+page.replace_html "content_s", msg
+page.toggle "notice"
+page.delay(3) do
+  page.toggle "notice"
+end
+page.insert_html :top, "rewiews", render(:partial => "rewiew", :object => rewiew)
+page << "jQuery('#rewiew_text').val('')"
+page << "if (jQuery('#info')){jQuery('#info').hide();}"

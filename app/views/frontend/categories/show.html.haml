@@ -1,0 +1,18 @@
+= title(@current_category.name)
+- content_for(:javascript) do
+  = javascript_include_tag "jquery-ui"
+  %script{:type => "text/javascript", :charset => "utf-8"}
+    //<![CDATA[
+    jQuery(function(){
+    jQuery("#accordion").accordion({ header: "a.header_tab", autoHeight: false, active: jQuery("#category_#{@current_category.parent.id}") });
+    });     
+    jQuery(function(){jQuery(".tip-org").tipTip({defaultPosition: "right"});});
+    //]]
+%div.container.span-17
+  %div.content.round-10#maincontent
+    %h2= @current_category.name
+    = org_rows(@orgs, params[:page].to_i)
+    = will_paginate(@orgs, :class => "pagination round-bottom-10")
+%div.category-box.span-7.round-10.last#accordion
+  - cache("tree_categories_and_subcategories") do
+    = tree_categories_and_subcategories

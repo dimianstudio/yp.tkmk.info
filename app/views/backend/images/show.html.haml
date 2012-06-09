@@ -1,0 +1,26 @@
+= title("Админка &#8594; Базы данных &#8594; Организации &#8594; " + @org.name + " &#8594; Фото")
+
+- content_for(:javascript) do
+  %script{:type => "text/javascript", :charset => "utf-8"}
+    = "var tb_pathToImage = '#{image_path("loadingAnimation.gif")}'"; 
+  = javascript_include_tag "jquery-thickbox"
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2= @org.name
+    = admin_org_menu("images")
+    - if @org.images.count > 0
+      %div.images.clearfix
+        - @org.images.each do |image|
+          %div.image_row.clearfix
+            %div.image_src
+              = link_to image_tag( image.image.url(:small) ), image_path( image.image.url(:original) ), :class => "thickbox"
+            %div.image_info
+              = link_to "Удалить фото", delete_image_backend_org_path(@org), :title => "Удалить фото", :method => "delete", :confirm => "Вы точно хотите удалить фото?"
+              %p= "<strong>Имя:</strong> #{image.image_file_name}"
+              %p= "<strong>Формат:</strong> #{image.image_content_type}"
+              %p= "<strong>Размер:</strong> #{image.image_file_size} байт"
+    - else
+      %p Организация не разместила ни одной фотографии

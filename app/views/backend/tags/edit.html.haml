@@ -1,0 +1,10 @@
+= title("Админка &#8594; Словари &#8594; Тэги &#8594; " + @tag.name + " &#8594; Редактирование")
+
+%div.container
+  = admin_menu("dictionaries")
+%div.container
+  %div.content
+    %h2 Тэги
+    - form_for(:tag, @tag, :url => backend_tag_path(@tag), :html => {:method => "put"}) do |f|
+      = f.text_field :name, :id => "tag_string"
+      = submit_tag("Редактировать")

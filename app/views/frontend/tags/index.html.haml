@@ -1,0 +1,22 @@
+- title(h(@org.name) + ' &#8594; Тэги')
+
+%div.container
+  %div.content.round-10     
+    %h2= h(@org.name)
+    = org_menu("tags")
+    - if @tags.count > 0
+      %div.tags
+        - @tags.each do |tag|
+          = link_to h(tag.name), tag_path(tag), :class => "tag round-10"
+    - else
+      %p Пока организация не имеет тэгов, но ты можешь изменить это ...
+    %div.user_area.form{:style => "display:none"}
+      %h3 Добавить тэги
+      %p.help Введите тэги через запятую и нажмите Добавить
+      - form_tag create_org_tags_path(@org), :method => "post" do
+        = text_area  'tag', 'string', :rows => 3
+        %dl.button
+          %dt= submit_tag("Добавить", :class => "button")
+          %dd
+  %div.guest_area{:style => "display:none"}
+    = auth_notice("Авторизуйтесь чтобы добавлять, редактировать или удалять тэги")

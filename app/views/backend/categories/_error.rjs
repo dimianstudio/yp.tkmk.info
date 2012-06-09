@@ -1,0 +1,6 @@
+page.replace_html "title_e", "Категории"
+page.replace_html "content_e", msg
+page.toggle "error"
+page.delay(3) do
+  page.toggle "error"
+end

@@ -1,0 +1,33 @@
+= title("Админка &#8594; Словари &#8594; Роли")
+
+%div.container
+  = admin_menu("dictionaries")
+%div.container
+  %div.content    
+    %h2 Роли
+    - if @roles.total_entries > 0
+      %p= "В словаре <strong>#{@roles.total_entries}</strong> #{Russian.p(@roles.total_entries, "роль", "роли", "ролей")}"
+      %table#higlight_table
+        %colgroup
+          %col
+          %col{:width => "90%"}
+          %col{:width => "5%"}       
+        %tbody
+          - @roles.each do |role|
+            %tr
+              %td
+                %span= link_to "&nbsp;", edit_backend_role_path(role), :class => "edit", :title => "Редактировать роль"
+                - if role.rights.size == 0  
+                  %span= link_to "&nbsp;", backend_role_path(role), :class => "delete", :title => "Удалить роль", :method => "delete", :confirm => "Вы точно хотите удалить роль?"
+              %td= link_to h(role.name), edit_backend_role_path(role)
+              %td
+                %span.link= link_to role.rights.size, backend_role_path(role)
+      = will_paginate(@roles)
+    - else
+      %p В словаре нет ни одной роли
+    %div.separator
+    %div
+      %h3 Добавить роль 
+      - form_tag backend_roles_path, :method => "post" do
+        = text_field 'role', 'name'
+        = submit_tag("Добавить")

@@ -1,0 +1,16 @@
+%div.org-box{:id => "favorite_#{favorite.org_id}_#{favorite.user_id}"}
+  %div.info
+    %h3= link_to favorite.org.name, org_path(favorite.org)
+    %div.adress
+      %span.town #{favorite.org.town.name}
+      - unless favorite.org.street.name.blank?
+        %span.street &#8594; ул. #{favorite.org.street.name}
+      - unless favorite.org.house.blank?
+        %span.house / #{favorite.org.house}
+    %div.additional
+      - unless favorite.org.email.blank?
+        %span.email= mail_to(favorite.org.email, "Написать письмо", :encode => "hex")
+      - unless favorite.org.www.blank?
+        %span.www= link_to("Веб-сайт", favorite.org.www, :target => "_blank", :title => "Откроется в новом окне")
+      %span= link_to("Позвонить", org_phones_path(favorite.org))
+      %span= link_to "Удалить из Избранного", org_favorite_path(:org_id => favorite.org_id, :id => favorite.user_id), :method => "delete", :class => "delete_favorite"

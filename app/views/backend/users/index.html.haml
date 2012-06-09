@@ -1,0 +1,22 @@
+= title("Админка &#8594; Пользователи")
+
+%div.container
+  = admin_menu("users")
+%div.container
+  %div.content    
+    %h2 Пользователи
+    - if @users.total_entries > 0
+      %p= "Зарегистрированно <strong>#{@users.total_entries}</strong> #{Russian.p(@users.total_entries, "пользователь", "пользователя", "пользователей")}"
+      %table#higlight_table
+        %colgroup
+          %col
+          %col{:width => "27%"}
+          %col{:width => "25%"}
+          %col{:width => "25%"}        
+          %col{:width => "10%"}
+          %col{:width => "10%"}
+        %tbody
+          = render :partial => "user", :collection => @users
+      = will_paginate(@users, :class => "pagination round-bottom-10")
+    - else
+      %p Нет ни одного пользователя

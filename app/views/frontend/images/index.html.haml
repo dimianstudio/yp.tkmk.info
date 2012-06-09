@@ -1,0 +1,28 @@
+- title(h(@org.name) + ' &#8594; Фото')
+
+- content_for(:javascript) do
+  %script{:type => "text/javascript", :charset => "utf-8"}
+    = "var tb_pathToImage = '#{image_path("loadingAnimation.gif")}'"; 
+  = javascript_include_tag "jquery-thickbox"
+
+%div.container
+  %div.content.round-10     
+    %h2= h(@org.name)
+    = org_menu("images")
+    - if @images.count > 0
+      %div.images.clearfix
+        - @images.each_with_index do |image, i|
+          - class_str = "thickbox"
+          - class_str << " last"  if (i+1)%4 == 0
+          = link_to image_tag( image.image.url(:small) ), image_path( image.image.url(:original) ), :class => class_str
+    - else
+      %p Организация не разместила ни одной фотографии
+    %div.user_area.form{:style => "display:none"}
+      %h3 Добавить фото
+      %p.help Выберите фото размером не более 1 мегабайта, в формате *.jpeg, *.png или *.bmp и нажмите Загрузить
+      %div   
+        - form_for(:image, @image, :url => create_org_images_path(@org), :html => {:method => "post", :multipart => true}) do |f|
+          = file_field :image, :image, :size => 110
+          = submit_tag("Загрузить", :class => "button")
+  %div.guest_area{:style => "display:none"}
+    = auth_notice("Авторизуйтесь чтобы добавлять, редактировать или удалять телефоны")

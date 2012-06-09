@@ -1,0 +1,26 @@
+= title("Админка &#8594; Базы данных &#8594; Избранное")
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2 Избранное
+    - if @favorites.size > 0
+      %table#higlight_table
+        %colgroup
+          %col{:width => "73%"}
+          %col{:width => "7%"}        
+          %col{:width => "10%"}
+          %col{:width => "10%"}
+        %tbody
+          - @favorites.each do |favorite|
+            %tr
+              %td= h(favorite.org.name)
+              %td= user_name(favorite.user)
+              %td{:style => "text-align:right;"}
+                %span.date_create= Russian::strftime(favorite.created_at, "%d.%m.%Y")
+              %td{:style => "text-align:right;"}
+                %span.date_update= Russian::strftime(favorite.updated_at, "%d.%m.%Y")
+      = will_paginate(@favorites, :class => "pagination round-bottom-10")
+    - else
+      %p Пока никто ничего в избранное не добавлял

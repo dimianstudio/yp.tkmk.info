@@ -1,0 +1,13 @@
+%tr
+  %td
+    %span= link_to "&nbsp;", edit_backend_tag_path(tag), :class => "edit", :title => "Редактировать тэг"
+    - if tag.orgs.size == 0
+      %span= link_to "&nbsp;", backend_tag_path(tag), :class => "delete", :title => "Удалить тэг", :method => "delete", :confirm => "Вы точно хотите удалить тэг?"
+  %td= link_to h(tag.name), edit_backend_tag_path(tag), :title => "Редактировать тэг"
+  %td= link_to h(tag.user.name), user_backend_tag_path(tag.user)
+  %td
+    %span.link= link_to tag.orgs.size, backend_tag_path(tag), :title => "Организации ассоциированные с тегом"
+  %td{:style => "text-align:right;"}
+    %span.date_create= Russian::strftime(tag.created_at, "%d.%m.%Y")
+  %td{:style => "text-align:right;"}
+    %span.date_update= Russian::strftime(tag.updated_at, "%d.%m.%Y")

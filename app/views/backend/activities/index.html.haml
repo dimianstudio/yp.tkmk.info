@@ -1,0 +1,53 @@
+= title("Админка &#8594; Базы данных &#8594; Организации &#8594; " + @org.name + " &#8594; Виды деятельности")
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2= @org.name
+    = admin_org_menu("activities")
+    - if @activities.total_entries > 0
+      %p= "Организация имеет <strong>#{@activities.total_entries}</strong> #{Russian.p(@activities.total_entries, "вид деятельности", "вида деятельности", "видов деятельности")}"
+      %table#higlight_table
+        %colgroup
+          %col
+          %col{:width => "89%"}
+          %col{:width => "8%"}
+        %tbody
+          - @activities.each do |activity|
+            %tr
+              %td
+                %span= link_to "&nbsp;", backend_org_activity_path(:org_id => @org.id, :id => activity.id), :class => "delete", :title => "Удалить вид деятельности", :method => "delete", :confirm => "Вы точно хотите удалить вид дейтельности?"
+              %td= "#{h(activity.category.parent.name)} &#8594; #{link_to h(activity.category.name), backend_category_path(activity.category_id), :title => "Организации в категории"}"
+              %td{:style => "text-align:right;"}
+                %span.date_create= Russian::strftime(activity.created_at, "%d.%m.%Y")
+      = will_paginate(@activities)
+    - else
+      %p Данной организации еще не присвоены виды деятельности
+    %div.separator
+    %div
+      %h3 Добавить виды деятельности
+      %div   
+        - form_tag backend_org_activities_path(@org), :method => "post" do
+          = text_field_tag 'search', nil, :style => "margin-bottom:10px;"
+          %span.requirement &#8592; Чтобы отфильтровать только определенные категории, введите пару начальных букв
+          %script{:type => "text/javascript", :charset => "utf-8"}
+            //<![CDATA[
+            jQuery('#search').keyup(function() {
+            var val = jQuery(this).val()  
+            if (val == '')
+            {
+            jQuery('p.category').css("display","block");
+            jQuery('span.subcategory').css("display","block");  
+            } 
+            else
+            {
+            jQuery('p.category').css("display","none");
+            jQuery('span.subcategory').css("display","none");
+            jQuery('span.subcategory[title*=' + val + ']').css("display","block");
+            }        
+            });
+            //]]
+          - cache("multiple_select_categories") do
+            = multiple_select_categories
+          = submit_tag("Добавить")

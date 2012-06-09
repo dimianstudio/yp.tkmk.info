@@ -1,0 +1,17 @@
+= title("Админка &#8594; Базы данных &#8594; Организации &#8594; " + @org.name + " &#8594; Телефоны &#8594; Редактирование")
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2= @org.name
+    = admin_org_menu("phones")
+    %h3 Редактировать телефон
+    - form_for(:phone, @phone, :url => backend_org_phone_path(:org_id => @org.id, :id => @phone.id), :html => {:method => "put"}) do |f|
+      %dl
+        %dt= label(:phone, :department, "Отдел")
+        %dd= f.text_field :department
+      %dl
+        %dt= label(:phone, :number, "Номер")
+        %dd= f.text_field :number
+      = submit_tag("Редактировать")

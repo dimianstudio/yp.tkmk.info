@@ -1,0 +1,15 @@
+- title
+- content_for(:javascript) do
+  %script{:type => "text/javascript", :charset => "utf-8"}
+    //<![CDATA[
+    if (getCookie() == null){jQuery(function(){jQuery(".create-button").tipTip({maxWidth:"300px", content: "Войдите на сайт или зарегистрируйтесь"});});}    
+    //]]
+
+= categories
+%div.create-box.round-10.span-10.last
+  %h3 Не находите свою организацию?
+  %p Не отчаивайтесь. Просто добавьте ее в справочник, путем заполнения соответствующей формы и Ваше предприятие появится на страницах нашего каталога.
+  = link_to "Добавить организацию", new_org_path, :class => "create-button round-bottom-10"
+%div.tags-box.round-10.span-9.last
+  = tags(33)
+%div.adv-box.round-10.span-10.last

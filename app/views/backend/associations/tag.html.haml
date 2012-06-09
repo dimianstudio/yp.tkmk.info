@@ -1,0 +1,21 @@
+= title("Админка &#8594; Базы данных &#8594; Ассоциации по тэгу &#8594; " + @tag.name)
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2 Ассоциации по тэгу
+    - if @associations.size > 0
+      %table#higlight_table
+        %colgroup
+          %col
+          %col{:width => "52%"}
+          %col{:width => "15%"}
+          %col{:width => "10%"}        
+          %col{:width => "10%"}
+          %col{:width => "10%"}
+        %tbody
+          = render :partial => 'association', :collection => @associations
+    - else
+      %p Данный тег ни с чем не ассоциирован
+    = will_paginate(@associations, :class => "pagination round-bottom-10")

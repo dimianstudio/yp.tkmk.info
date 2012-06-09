@@ -1,0 +1,37 @@
+= title("Админка &#8594; Пользователи &#8594; " + @user.name + " &#8594; Права пользователя")
+
+%div.container
+  = admin_menu("users")
+%div.container
+  %div.content    
+    %h2= @user.login
+    = admin_user_menu("rights")
+    - if @rights.total_entries > 0
+      %p= "Пользователь имеет <strong>#{@rights.total_entries}</strong> #{Russian.p(@rights.total_entries, "право", "права", "прав")}"
+      %table#higlight_table
+        %colgroup
+          %col
+          %col{:width => "77%"}
+          %col{:width => "10%"}   
+          %col{:width => "10%"}    
+        %tbody
+          - @rights.each do |right|
+            %tr
+              %td
+                - unless @user.id == 1 and right.role.name == 'admin'
+                  %span= link_to "&nbsp;", delete_right_backend_user_path(:id => right.user_id, :right_id => right.id), :class => "delete", :title => "Удалить роль", :method => "delete", :confirm => "Вы точно хотите удалить роль?"
+              %td= h(right.role.name)
+              %td{:style => "text-align:right;"}
+                %span.date_create= Russian::strftime(right.created_at, "%d.%m.%Y")
+              %td{:style => "text-align:right;"}
+                %span.date_update= Russian::strftime(right.updated_at, "%d.%m.%Y")
+      = will_paginate(@rights)
+    - else
+      %p Пользователь не имеет прав
+    %div.separator
+    %div
+      %h3 Добавить роль
+      %div   
+        - form_tag add_right_backend_user_path(@user), :method => "post" do
+          = select (:right, :id, Role.find(:all).collect{ |r| [r.name, r.id] })
+          = submit_tag("Добавить")

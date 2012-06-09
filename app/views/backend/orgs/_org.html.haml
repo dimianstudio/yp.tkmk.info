@@ -1,0 +1,12 @@
+%tr
+  %td
+    %span= link_to "&nbsp;", backend_org_path(org), :class => "edit", :title => "Редактировать организацию"
+    %span= link_to "&nbsp;", backend_org_path(org), :class => "delete", :title => "Удалить организацию", :method => "delete", :confirm => "Вы точно хотите удалить организацию?"
+  %td= link_to truncate(org.name, :length => 50), backend_org_path(org), :title => "Редактировать организацию"
+  %td= link_to truncate(org.town.name, :length => 12), backend_town_path(org.town), :title => "Организации в этом населенном пункте..."
+  %td= link_to truncate(org.street.name, :length => 13), backend_street_path(org.street), :title => "Организации по этой улице..."
+  %td= link_to user_name(org.user), orgs_backend_user_path(org.user), :title => "Организации добавленные данным пользователем..."
+  %td{:style => "text-align:right;"}
+    %span.date_create= Russian::strftime(org.created_at, "%d.%m.%Y")
+  %td{:style => "text-align:right;"}
+    %span.date_update= Russian::strftime(org.updated_at, "%d.%m.%Y")

@@ -1,0 +1,40 @@
+= title("Админка &#8594; Базы данных &#8594; Организации &#8594; " + @org.name + " &#8594; Тэги")
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2= @org.name
+    = admin_org_menu("tags")
+    - if @associations.total_entries > 0
+      %p= "Организация имеет <strong>#{@associations.total_entries}</strong> #{Russian.p(@associations.total_entries, "ассоциацию", "ассоциации", "ассоциаций")}"
+      %table#higlight_table{:style => "margin-bottom:0;"}
+        %colgroup
+          %col
+          %col{:width => "67%"}
+          %col{:width => "10%"}        
+          %col{:width => "10%"}
+          %col{:width => "10%"}
+        %tbody
+          - @associations.each do |tag|
+            %tr
+              %td
+                %span= link_to "&nbsp;", backend_association_path(tag), :class => "delete", :title => "Удалить ассоциацию", :method => "delete", :confirm => "Вы точно хотите удалить ассоциацию?"
+              %td= link_to h(tag.tag.name), tag_backend_association_path(tag.tag)
+              %td= link_to user_name(tag.user), user_backend_association_path(tag.user)
+              %td{:style => "text-align:right;"}
+                %span.date_create= Russian::strftime(tag.created_at, "%d.%m.%Y")
+              %td{:style => "text-align:right;"}
+                %span.date_update= Russian::strftime(tag.updated_at, "%d.%m.%Y")
+      = will_paginate(@associations)
+    - else
+      %p Данная организация не имеет ассоциаций
+    %div.separator
+    %div
+      %h3 Добавить тэг(-и)
+      %p.help Введите тэги через запятую и нажмите Добавить
+      %div   
+        - form_tag backend_orgs_associations_path(@org), :method => "post" do
+          = text_area 'tag', 'string', :rows => 3
+          = submit_tag("Добавить")
+   

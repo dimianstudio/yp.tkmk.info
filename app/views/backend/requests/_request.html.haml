@@ -1,0 +1,13 @@
+%tr{:class => ("approved" if request.approved)}
+  %td
+    %span= link_to "&nbsp;", edit_backend_request_path(request), :class => "edit", :title => "Редактировать запрос"
+    %span= link_to "&nbsp;", backend_request_path(request), :class => "delete", :title => "Удалить запрос", :method => "delete", :confirm => "Вы точно хотите удалить запрос?"
+  %td
+    - if request.org
+      = link_to h(request.org.name), edit_backend_request_path(request), :title => "Редактировать запрос"
+    - else
+      = link_to h(request.content[:new_record][:org][:name]), edit_backend_request_path(request), :title => "Редактировать запрос"
+  %td= link_to user_name(request.user), requests_backend_user_path(request)
+  %td= link_to "", edit_backend_request_path(request), :class => "#{request.action}_#{request.object}"
+  %td{:style => "text-align:right;"}
+    %span.date_create= Russian::strftime(request.created_at, "%d.%m.%Y")

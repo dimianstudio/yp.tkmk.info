@@ -1,0 +1,36 @@
+- title(h(@org.name) + ' &#8594; Телефоны')
+
+%div.container
+  %div.content.round-10     
+    %h2= h(@org.name)
+    = org_menu("phones")
+    - if @phones.total_entries > 0
+      %table#higlight_table{:style => "margin:15px 0;"}
+        %colgroup
+          %col{:width => "84%"}
+          %col
+          %col.phones
+        %tbody
+          - @phones.each do |phone|
+            %tr
+              %td= h(phone.department)
+              %td
+                %span.user_area{:style => "display:none;"}= link_to "&nbsp;", edit_org_phone_path(:org_id => phone.org_id, :id => phone.id), :class => "edit", :title => "Редактировать телефон"
+                %span.user_area{:style => "display:none;"}= link_to "&nbsp;", org_phone_path(:org_id => phone.org_id, :id => phone.id), :method => "delete", :class => "delete", :confirm => "Вы точно хотите сделать запрос на удаление телефона?", :title => "Удалить телефон"
+              %td{:style => "text-align:center;"}= h(phone.number)
+      = will_paginate(@phones)
+    - else  
+      %p Странно, но организация не имеет телефонов :( 
+    %div.user_area.form{:style => "display:none"}
+      %h3 Добавить телефоны
+      %p.help Заполните поля и нажмите кнопку Добавить, после данные будут отправлены на проверку Администратору. В случае успешного прохождения модерации телефон будут внесен в базу.
+      %div   
+        - form_tag create_org_phones_path(@org), :method => "post" do          
+          %div#phones
+            = link_to_remote "+ Добавить строку", {:url => add_phone_path(:format => "js"), :method => :get}, :class => "right_tip", :title => "Кликните СЮДА если хотите добавить еще несколько телефонов"
+            = render :partial => "shared/elements_form/enter_phones"
+          %dl.button{:style => "padding-top:10px;"}
+            %dt= submit_tag("Добавить", :class => "button")
+            %dd
+  %div.guest_area{:style => "display:none"}
+    = auth_notice("Авторизуйтесь чтобы добавлять, редактировать или удалять телефоны")

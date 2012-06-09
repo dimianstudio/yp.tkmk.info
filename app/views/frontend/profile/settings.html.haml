@@ -1,0 +1,25 @@
+- title('Личный кабинет  &#8594; Настройки')
+
+%div.container.span-17
+  %div.content.round-10{:Style => "padding-bottom:15px;"}
+    %h2 Настройки
+    = user_menu("settings")
+    - current_user.password = current_user.password_confirmation = nil
+    - form_for(:user, current_user, :url => user_path(current_user), :html => {:method => "put"}) do |f|
+      %p.help В данной секции можно поменять данные своей учетной записи: имя которое пользователи видят в отзывах, Ваш e-mail адрес для связи с администрацией и пароль для авторизованного доступа к сайту
+      %dl
+        %dt= label(:user, :name, "Отображаемое имя")
+        %dd{:style => "width:450px;"}= f.text_field :name
+      %dl
+        %dt= label(:user, :email, "E-mail")
+        %dd{:style => "width:450px;"}= f.text_field :email
+      %dl
+        %dt= label(:user, :password, "Новый пароль")
+        %dd{:style => "width:450px;"}= f.password_field :password
+      %dl
+        %dt= label(:user, :re_password, "Подтверждение")
+        %dd{:style => "width:450px;"}= f.password_field :password_confirmation
+      =submit_tag("Изменить", :class => "button")
+%div.span-7.last
+  - cache("service_stat") do
+    = stat_panel

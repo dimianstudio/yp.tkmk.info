@@ -1,0 +1,46 @@
+- title('Личный кабинет  &#8594; Запросы')
+
+%div.container.span-17
+  %div.content.round-10
+    %h2 Запросы
+    = user_menu("requests")
+    - if @requests.total_entries > 0
+      %p= "Вы сделали <strong>#{@requests.total_entries}</strong> #{Russian.p(@requests.total_entries, "запрос", "запроса", "запросов")}"
+      - @requests.each do |request|
+        %div.request-box.round-10{:class => approved_color(request.approved)}
+          %div.status= t(approved_color(request.approved))
+          %h3 ##{request.id.to_s + " " + t(request.action) + " " + t(request.object)}
+          %p= "<strong>Организация:</strong> #{request.org ? h(request.org.name) : h(request.content[:new_record][:org][:name])}"
+          %p= "<strong>Создан:</strong> #{Russian::strftime(request.created_at, "%d %B %Y года в %H:%M")}"
+          - unless request.comment.blank?
+            %div.comment.round-10= request.comment
+      = will_paginate(@requests, :class => "pagination round-bottom-10")
+    - else
+      %p Вы не сделали ни одного запроса
+%div.span-7.last
+  - cache("service_stat") do
+    = stat_panel  
+  - unless session[:back].blank?
+    = link_to "Вернутся назад через <span class='second'>10</span> секунд", session[:back], :id => "timer_url"
+    - content_for(:javascript) do
+      %script{:type => "text/javascript", :charset => "utf-8"}
+        //<![CDATA[
+        function StartTimer() {
+        y = 10;
+        action = window.setInterval("Timer()",1000);
+        }
+        function Timer() {
+        y  = y - 1;
+        document.getElementById('timer_url').innerHTML = "Вернутся назад через <span class='second'>" + y + "</span> секунд";
+        if (parseInt(y)<='0') {
+        document.getElementById('timer_url').innerHTML = "Возвращаемся ...";
+        }
+        }        
+        //]]     
+    %script{:type => "text/javascript", :charset => "utf-8"}
+      //<![CDATA[
+      StartTimer();
+      //]]
+    - content_for(:meta) do
+      %meta{"http-equiv" => "Refresh", :content => "10;URL=#{session[:back]}"}        
+    - session[:back] = nil

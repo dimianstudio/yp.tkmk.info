@@ -1,0 +1,14 @@
+%li{ :style => "clear:left;", :id => "category_#{subcategory.id}" }
+  %div{:style => "float:left;width:45px;"}
+    %span= link_to "&nbsp;", edit_backend_category_path(subcategory), :class => "edit", :title => "Редактировать категорию"
+    - if subcategory.orgs.size == 0
+      %span= link_to "&nbsp;", backend_category_path(subcategory), :class => "delete", :title => "Удалить категорию", :method => "delete", :confirm => "Вы точно хотите удалить категорию?"
+  %div{:style => "float:left;width:360px;"}
+    = truncate(subcategory.name, :length => 40)
+  %div{:style => "float:left;width:40px;"}
+    %span.link= link_to subcategory.orgs.size, backend_category_path(subcategory), :title => "Организации в этой категории..."
+  %div{:style => "float:left;width:80px;"}
+    %span.date_create= Russian::strftime(subcategory.created_at, "%d.%m.%Y")
+  %div{:style => "float:right;width:80px;"}
+    %span.date_update= Russian::strftime(subcategory.updated_at, "%d.%m.%Y")
+= draggable_element("category_#{subcategory.id}", :ghosting => true, :revert => true)

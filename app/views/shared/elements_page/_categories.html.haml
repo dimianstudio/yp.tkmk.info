@@ -1,0 +1,20 @@
+%div.sections.span-7
+  %ul.round-10#tabs
+    - @categories.each_with_index do |category,i|
+      - class_str = ""
+      - class_str << 'active first' if i == 0
+      - class_str << 'last' if i == @categories.length-1
+      %li{:class => (class_str.to_s if !class_str.blank?), :id => "category_#{category.id}"}
+        = link_to_remote truncate(category.name, :length => 35), {:url => category_path(category, :format => "js"), :method => :get, :before => "jQuery('#preloader').show()", :complete => "jQuery('#preloader').hide()"}, :href => category_path(category)
+%div.subsections.span-8.pull-1#subsections
+  %div.round-10#preloader{:style => "display:none;"}
+  %div#tab_content
+    %ul.round-10
+      - @subcategories.each_with_index do |subcategory,y|
+        - if y == @categories.length
+          %li{:class => "last"}= link_to "<strong>Больше</strong>", category_path(subcategory)
+          - break
+        - class_str = ""
+        - class_str << 'first' if y == 0
+        - class_str << 'last' if y == @subcategories.length-1
+        %li{:class => (class_str.to_s if !class_str.blank?)}= link_to truncate(subcategory.name, :length => 40), category_path(subcategory)

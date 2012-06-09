@@ -1,0 +1,13 @@
+= title("Админка &#8594; Базы данных &#8594; Отзывы")
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2 Отзывы  
+    - if @rewiews.total_entries > 0  
+      %p= "В базе данных <strong>#{@rewiews.total_entries}</strong> #{Russian.p(@rewiews.total_entries, "отзыв", "отзыва", "отзывов")}"
+      = render :partial => "rewiew", :collection => @rewiews  
+      = will_paginate(@rewiews, :class => "pagination round-bottom-10")
+    - else
+      %p Отзывов пока нет

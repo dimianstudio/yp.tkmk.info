@@ -1,0 +1,63 @@
+= title("Админка &#8594; Базы данных &#8594; Запросы &#8594; Добавление организации")
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2 Запрос на добавление организации
+    %p= "<strong>Пользователь</strong>: #{link_to user_name(@request.user), requests_backend_user_path(@request.user) }"
+    - form_tag backend_request_path(@request), :method => "put" do
+      %fieldset
+        %legend Общая информация
+        %dl
+          %dt= label(:org, :name, "Название")
+          %dd= text_field :org, :name, :value => @org.name
+        %dl{:style => "height:100px;"}
+          %dt= label(:org, :description, "Описание")
+          %dd
+            %div= text_area :org, :description, :value => @org.description, :rows => 6
+        %dl
+          %dt= label(:org, :town_id, "Город")
+          %dd
+            %div= select :org, :town_id, Town.find(:all, :order => "name ASC").collect { |t| [t.name, t.id] }, :selected => @org.town_id.to_i
+        %dl
+          %dt= label(:org, :street_id, "Улица")
+          %dd
+            %div= select :org, :street_id, Street.find(:all, :order => "name ASC").collect { |s| [s.name, s.id] }, :selected => @org.street_id.to_i
+        %dl
+          %dt= label(:org, :house, "Дом")
+          %dd
+            %div= text_field :org, :house, :value => @org.house
+        %dl
+          %dt= label(:org, :email, "E-mail")
+          %dd
+            %div= text_field :org, :email, :value => @org.email
+        %dl
+          %dt= label(:org, :www, "Веб-сайт")
+          %dd
+            %div= text_field :org, :www, :value => @org.www
+      %fieldset
+        %legend Виды деятельности
+        - @activities.each do |a|
+          = check_box_tag('activities[]', a, true, :id => "activities_#{a}") + " #{Category.find(a).name}<br />"
+      - if @phones.size > 0
+        %fieldset
+          %legend Телефоны
+          %div#phones
+            - @phones.each_with_index do |p,i|
+              %div.phone_row
+                %div.department
+                  = text_field 'phone', 'department', {:name => "phones[][department]", :value => p[:department], :id => "phone_department_#{i}"}
+                %div.number
+                  = text_field 'phone', 'number', {:name => "phones[][number]", :value => p[:number], :id => "phone_number_#{i}"}
+      %fieldset
+        %legend Утверждение
+        %dl{:style => "height:60px;"}
+          %dt= label(:request, :comment, "Комментарий?")
+          %dd= text_area :request, :comment, :rows => 3
+        %dl
+          %dt= label(:request, :approved, "Утвердить?")
+          %dd= check_box :request, :approved
+      %dl
+        %dt=submit_tag("Утвердить", :class => "button")
+        %dd= back_link(:back)

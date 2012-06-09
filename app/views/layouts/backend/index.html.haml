@@ -1,0 +1,23 @@
+!!!
+%html{:xmlns => "http://www.w3.org/1999/xhtml"}
+  %head
+    %meta{'http-equiv' => "Content-Type", :content => "text/html; charset=UTF-8"}
+    %title= yield :title     
+    /[if IE]
+      = stylesheet_link_tag "ie", :media => "screen, projection"
+    = stylesheet_link_tag "template_backend", :media => "screen, projection"
+    = yield :css
+    = javascript_include_tag "all_backend"
+    = yield :javascript
+  %body
+    = messages
+    %div.root.container 
+      %div.header.span-24
+        %div.logo.span-9 
+          = link_to "Желтые страницы Токмака", admin_path, :title => "Желтые страницы Токмака"
+        %div.r-header.push-5.last
+          = user_bar      
+        %div.search.round-10.span-8 
+          = admin_search_bar  
+      %div.content-box.span-24
+        = yield

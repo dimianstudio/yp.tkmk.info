@@ -1,0 +1,20 @@
+= title("Админка &#8594; Словари &#8594; Категории")
+
+%div.container
+  = admin_menu("dictionaries")
+%div.container
+  %div.content    
+    %h2 Категории
+    = backend_categories
+    %div.separator{:style => "clear:left;"}
+    %div
+      %h3 Добавить категорию
+      %div   
+        - form_tag backend_categories_path, :method => "post" do
+          %dl
+            %dt= label(:category, :name, "Название")
+            %dd= text_field 'category', 'name'
+          %dl
+            %dt= label(:category, :parent_id, "Категория")
+            %dd= select_category
+          = submit_tag("Добавить")

@@ -1,0 +1,28 @@
+= title("Админка &#8594; Базы данных &#8594; Запросы &#8594; Редактирование телефона")
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2 Запрос на редактирование телефона
+    %p= "<strong>Организация</strong>: #{link_to @request.org.name, backend_org_phones_path(:org_id => @request.org_id), :target => "_blank"}<br /><strong>Пользователь</strong>: #{link_to user_name(@request.user), requests_backend_user_path(@request.user), :target => "_blank" }"
+    - form_tag backend_request_path(@request), :method => "put" do
+      %dl
+        %dt= label(:phone_editable, :department, "Название отдела")
+        %dd
+          %div.editable= text_field :phone_editable, :department, :value => @phone_editable[:department]
+          %div.original= text_field :phone, :department, :value => @phone.department
+      %dl
+        %dt= label(:phone_editable, :number, "Номер телефона")
+        %dd
+          %div.editable= text_field :phone_editable, :number, :value => @phone_editable[:number]
+          %div.original= text_field :phone, :number, :value => @phone.number
+      %dl
+        %dt= label(:request, :approved, "Утвердить?")
+        %dd= check_box :request, :approved
+      %dl{:style => "height:60px;"}
+        %dt= label(:request, :comment, "Комментарий")
+        %dd= text_area :request, :comment, :rows => 3
+      %dl
+        %dt= submit_tag("Утвердить", :class => "button")
+        %dd= back_link(:back)

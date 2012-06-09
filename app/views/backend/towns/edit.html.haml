@@ -1,0 +1,11 @@
+= title("Админка &#8594; Словари &#8594; Населенные пункты &#8594; " + @town.name + " &#8594; Редактирование")
+
+%div.container
+  = admin_menu("dictionaries")
+%div.container
+  %div.content
+    %h2 Населенные пункты
+    %p.help Внесите необходимые изменения и нажмите кнопку Редактировать
+    - form_for(:town, @town, :url => backend_town_path(@town), :html => {:method => "put"}) do |f|
+      = f.text_field :name
+      = submit_tag("Редактировать")

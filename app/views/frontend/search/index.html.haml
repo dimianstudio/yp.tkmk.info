@@ -1,0 +1,11 @@
+- title('Поиск')
+
+%div.container
+  %div.content.round-10
+    %h2 Поиск &#8594; #{h(params[:query])}
+    - if @results.total_entries > 0
+      %p= "Найдено <strong>#{@results.total_entries}</strong> #{Russian.p(@results.total_entries, "организацию", "организации", "организаций")}"
+      = org_rows(@results, params[:page].to_i)
+      = will_paginate(@results, :class => "pagination round-bottom-10")
+    - else
+      %p Извините ничего не найдено

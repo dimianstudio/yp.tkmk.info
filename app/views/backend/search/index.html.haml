@@ -1,0 +1,23 @@
+= title("Админка &#8594; Поиск")
+
+%div.container
+  = admin_menu("main")
+%div.container
+  %div.content    
+    %h2 Поиск
+    - if @results.total_entries > 0
+      %p.search_result= "Найдено #{@results.total_entries} #{Russian.p(@results.total_entries, "организация", "организации", "организаций")}"
+      %table#higlight_table
+        %colgroup
+          %col
+          %col{:width => "47%"}
+          %col{:width => "11%"}
+          %col{:width => "12%"}
+          %col{:width => "7%"}
+          %col{:width => "9%"}      
+          %col{:width => "9%"}
+        %tbody
+          = render :partial => "backend/orgs/org", :collection => @results
+      = will_paginate(@results, :class => "pagination round-bottom-10")
+    - else
+      %p Извините, но ничего не найдено :(

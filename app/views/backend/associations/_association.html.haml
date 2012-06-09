@@ -1,0 +1,10 @@
+%tr
+  %td
+    %span= link_to "&nbsp;", backend_association_path(association), :class => "delete", :title => "Удалить ассоциацию", :method => "delete", :confirm => "Вы точно хотите удалить ассоциацию?"
+  %td= link_to truncate(association.org.name, :length => 70), backend_orgs_associations_path(association.org), :title => "Ассоциации этой организации..."
+  %td= link_to h(association.tag.name), tag_backend_association_path(association.tag), :title => "Ассоциации этого тэга..."
+  %td= link_to user_name(association.user), user_backend_association_path(association.user), :title => "Ассоциации этого пользователя..."          
+  %td{:style => "text-align:right;"}
+    %span.date_create= Russian::strftime(association.created_at, "%d.%m.%Y")
+  %td{:style => "text-align:right;"}
+    %span.date_update= Russian::strftime(association.updated_at, "%d.%m.%Y")

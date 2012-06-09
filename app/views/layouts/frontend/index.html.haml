@@ -1,0 +1,36 @@
+!!!
+%html{:xmlns => "http://www.w3.org/1999/xhtml"}
+  %head
+    %meta{'http-equiv' => "Content-Type", :content => "text/html; charset=UTF-8"}
+    %meta{'name' => "google-site-verification", :content => "5Aq_TQM3uuVLM9CzEFVF3R2cfYW3vH2tiZNMP1F94gk"}
+    = yield :meta
+    %title= yield :title
+    %link{ :href=> image_path("favicon.ico"), :rel=>'shortcut icon'}    
+    /[if IE]
+      = stylesheet_link_tag "ie", :media => "screen, projection"
+    = stylesheet_link_tag "template", :media => "screen, projection"
+    = yield :css
+    = javascript_include_tag "all"
+    = yield :javascript
+    = google_analitics
+  %body
+    = messages
+    %div.light
+    %div.fixed_panel
+      %div.emergency_phones 
+        = link_to "", emergency_phones_path, :title => "Экстренные телефоны"
+      %div.help_phones
+        = link_to "", help_phones_path, :title => "Справочные телефоны"
+    %div.root.container 
+      %div.header.span-24
+        %div.logo.span-8  
+          = link_to "", "/", :title => "Желтые страницы Токмака"
+        %div.r-header.push-5.last
+          = user_bar
+          %div.contact_phone 0 (68) 928-43-21
+      %div.tip.search.round-10.span-24
+        = search_bar
+      %div.content-box.span-24
+        = yield
+      %div.footer-box.span-24
+        = footer

@@ -1,0 +1,39 @@
+= title("Админка")
+
+/ - content_for(:javascript) do
+/   = ga_stat_graffic(@data)
+  
+%div.container
+  = admin_menu("main")
+%div.container
+  %div.content.clearfix{:style => "padding-bottom:0;height:300px;"}
+  /   %h3 Статистика (посетители/просмотры)
+  /   %div.charts
+  /     %div#chart1
+  /     %div#chart2    
+  /   %div.users
+  /     %h3 Последние пользователи
+  /     %table#higlight_table
+  /       %colgroup
+  /         %col
+  /         %col{:width => "27%"}
+  /         %col{:width => "25%"}
+  /         %col{:width => "25%"}        
+  /         %col{:width => "10%"}
+  /         %col{:width => "10%"}
+  /       %tbody
+  /         = render :partial => "backend/users/user", :collection => @users
+  /   %div.requests
+  /     %h3 Последние запросы
+  /     %table#higlight_table
+  /       %colgroup
+  /         %col
+  /         %col{:width => "70%"}
+  /         %col{:width => "10%"}
+  /         %col{:width => "5%"}      
+  /         %col{:width => "10%"}
+  /       %tbody
+  /         = render :partial => "backend/requests/request", :collection => @requests
+  /   %div.rewiews
+  /     %h3 Последние отзывы
+  /     = render :partial => "backend/rewiews/rewiew", :collection => @rewiews

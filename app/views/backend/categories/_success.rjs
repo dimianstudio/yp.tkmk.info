@@ -1,0 +1,7 @@
+page.replace_html "title_s", "Категории"
+page.replace_html "content_s", "Категория перенесена"
+page.hide "category_#{id}"
+page.toggle "notice"
+page.delay(3) do
+  page.toggle "notice"
+end

@@ -1,0 +1,17 @@
+- title('Авторизация')
+
+%div.container
+  %div.content.round-10
+    %h2 Авторизация
+    - form_tag session_path do
+      %dl.tip{:title => "Ваш логин"}
+        %dt= label_tag "Имя"
+        %dd= text_field_tag 'login', @login
+      %dl.tip{:title => "Ваш пароль"}
+        %dt= label_tag "Пароль"
+        %dd= password_field_tag 'password', nil, :class => "last"
+      %dl
+        %dt= submit_tag("Вход", :class => "button")
+        %dd
+      = hidden_field_tag 'remember_me', '1'
+      

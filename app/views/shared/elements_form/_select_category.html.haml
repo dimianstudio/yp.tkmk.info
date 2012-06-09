@@ -1,0 +1,11 @@
+%select{:name => "category[parent_id]"}
+  %option{:selected => "selected", :disabled => "disabled"} Выберите необходимую категорию
+  - if selected == 1
+    %option{:value => 1, :selected => "selected"} -- Корневая категория --
+  - else
+    %option{:value => 1} -- Корневая категория --
+  - categories.each do |category|          
+    - if category.id == selected
+      %option{:value => category.id, :selected => "selected"}= category.name
+    - else
+      %option{:value => category.id}= category.name

@@ -1,0 +1,9 @@
+%ul.round-10
+  - categories.each_with_index do |category,i|
+    - if (i == categories_size)
+      %li{:class => "last"}= link_to "<strong>Больше...</strong>", category_path(category)
+      - break
+    - class_str = ""
+    - class_str << 'first' if i == 0
+    - class_str << 'last' if i == categories.length-1
+    %li{:class => (class_str.to_s if !class_str.blank?)}= link_to truncate(category.name, :length => 40), category_path(category)

@@ -1,0 +1,24 @@
+= title("Админка &#8594; Базы данных &#8594; Запросы &#8594; Удаление вида деятельности")
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2 Запрос на удаление вида деятельности
+    %p= "<strong>Организация</strong>: #{link_to @request.org.name, backend_org_activities_path(:org_id => @request.org_id), :target => "_blank"}<br /><strong>Пользователь</strong>: #{link_to user_name(@request.user), requests_backend_user_path(@request.user), :target => "_blank" }"
+    - form_tag backend_request_path(@request), :method => "put" do
+      %dl
+        %dt= label(:request, :object, "Вид деятельности")
+        %dd= @activity.name
+      %dl{:style => "height:60px;"}
+        %dt= label(:request, :msg, "Причина")
+        %dd= text_area :request, :msg, :rows => 3, :value => @request.content[:msg] 
+      %dl{:style => "height:60px;"}
+        %dt= label(:request, :comment, "Комментарий")
+        %dd= text_area :request, :comment, :rows => 3
+      %dl
+        %dt= label(:request, :approved, "Утвердить?")
+        %dd= check_box :request, :approved
+      %dl
+        %dt=submit_tag("Утвердить", :class => "button")
+        %dd= back_link(:back)

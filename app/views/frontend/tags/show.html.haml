@@ -1,0 +1,16 @@
+- title(h(@tag.name))
+- content_for(:javascript) do
+  %script{:type => "text/javascript", :charset => "utf-8"}
+    //<![CDATA[   
+    jQuery(function(){jQuery(".tip-org").tipTip({defaultPosition: "right"});});
+    //]]
+    
+%div.container
+  %div.content.round-10
+    %h2 Тэг &#8594; #{h(@tag.name)}
+    - if @orgs.total_entries > 0
+      %p= "Найдено <strong>#{@orgs.total_entries}</strong> #{Russian.p(@orgs.total_entries, "организацию", "организации", "организаций")}"
+      = org_rows(@orgs, params[:page].to_i)
+      = will_paginate(@orgs)
+    - else
+      %p Этому тэгу не ассоциирована ни одна организация

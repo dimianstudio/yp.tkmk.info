@@ -1,0 +1,33 @@
+%div#check_logged Проверка...
+%div#logged_out{:style => "display:none;"}
+  = "Ты имеешь аккаунт?" 
+  = link_to "Войти", login_path, :class => "signin"
+  %fieldset#signin_menu
+    - form_tag session_path do
+      %p
+        = label_tag 'login', "Имя"
+        = text_field_tag 'login', @login
+      %p
+        = label_tag 'password', "Пароль"
+        = password_field_tag 'password', nil
+      %p.remember
+        = submit_tag("Вход", :id => "button")
+        = hidden_field_tag 'remember_me', '1'
+        = link_to "Регистрация", signup_path
+%script{:type => "text/javascript", :charset => "utf-8"}
+  //<![CDATA[
+  jQuery(document).ready(function() {
+  jQuery(".signin").click(function(e) { e.preventDefault();
+  jQuery("fieldset#signin_menu").toggle();
+  jQuery(".signin").toggleClass("menu-open");
+  });
+  jQuery("fieldset#signin_menu").mouseup(function() { return false	});
+  jQuery(document).mouseup(function(e) {
+  if(jQuery(e.target).parent("a.signin").length==0) {
+  jQuery(".signin").removeClass("menu-open");
+  jQuery("fieldset#signin_menu").hide();
+  }
+  });
+  });
+  //]]
+%div#logged_in{:style => "display:none;"}

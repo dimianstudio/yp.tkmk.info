@@ -1,0 +1,7 @@
+%div#h-tabs
+  %ul
+    %li{:id => ("current" if current == "index")}= link_to "Главная", profile_index_path
+    %li{:id => ("current" if current == "settings")}= link_to "Настройки", settings_profile_path
+    %li{:id => ("current" if current == "favorites")}= link_to "Избранное", profile_favorites_path
+    %li{:id => ("current" if current == "requests")}= link_to "Запросы", requests_path
+%div#h-tabsline{:style => "margin-bottom:15px;"}

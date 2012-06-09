@@ -1,0 +1,53 @@
+= title("Админка &#8594; Базы данных &#8594; Запросы &#8594; Редактирование организации")
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2 Запрос на редактирование организации
+    %p= "<strong>Организация</strong>: #{link_to @request.org.name, backend_org_path(@request.org), :target => "_blank"}<br /><strong>Пользователь</strong>: #{link_to user_name(@request.user), requests_backend_user_path(@request.user), :target => "_blank" }"
+    - form_tag backend_request_path(@request), :method => "put" do
+      %dl
+        %dt= label(:org_editable, :name, "Название")
+        %dd
+          %div.editable= text_field :org_editable, :name, :value => @org_editable.name
+          %div.original= text_field :org, :name, :value => @request.org.name,:disabled => "disabled"
+      %dl{:style => "height:100px;"}
+        %dt= label(:org_editable, :description, "Описание")
+        %dd
+          %div.editable= text_area :org_editable, :description, :value => @org_editable.description, :rows => 6
+          %div.original= text_area :org, :description, :value => @request.org.description, :rows => 6,:disabled => "disabled"
+      %dl
+        %dt= label(:org_editable, :town_id, "Город")
+        %dd
+          %div.editable= select :org_editable, :town_id, Town.find(:all, :order => "name ASC").collect { |t| [t.name, t.id] }, :selected => @org_editable.town_id.to_i
+          %div.original= @request.org.town.name
+      %dl
+        %dt= label(:org_editable, :street_id, "Улица")
+        %dd
+          %div.editable= select :org_editable, :street_id, Street.find(:all, :order => "name ASC").collect { |s| [s.name, s.id] }, :selected => @org_editable.street_id.to_i
+          %div.original= @request.org.street.name
+      %dl
+        %dt= label(:org_editable, :house, "Дом")
+        %dd
+          %div.editable= text_field :org_editable, :house, :value => @org_editable.house
+          %div.original= text_field :org, :house, :value => @request.org.house,:disabled => "disabled"
+      %dl
+        %dt= label(:org_editable, :email, "E-mail")
+        %dd
+          %div.editable= text_field :org_editable, :email, :value => @org_editable.email
+          %div.original= text_field :org, :email, :value => @request.org.email,:disabled => "disabled"
+      %dl
+        %dt= label(:org_editable, :www, "Веб-сайт")
+        %dd
+          %div.editable= text_field :org_editable, :www, :value => @org_editable.www
+          %div.original= text_field :org, :www, :value => @request.org.www,:disabled => "disabled"
+      %dl{:style => "height:60px;"}
+        %dt= label(:request, :comment, "Комментарий")
+        %dd= text_area :request, :comment, :rows => 3
+      %dl
+        %dt= label(:request, :approved, "Утвердить?")
+        %dd= check_box :request, :approved
+      %dl
+        %dt=submit_tag("Утвердить", :class => "button")
+        %dd= back_link(:back)

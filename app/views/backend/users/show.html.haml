@@ -1,0 +1,32 @@
+= title("Админка &#8594; Пользователи &#8594; " + @user.name)
+
+%div.container
+  = admin_menu("users")
+%div.container
+  %div.content    
+    %h2= @user.login
+    = admin_user_menu("profile")
+    - @user.password = @user.password_confirmation = nil
+    - form_for(:user, @user, :url => backend_user_path(@user), :html => {:method => "put"}) do |f|
+      %dl
+        %dt= label(:user, :login, "Логин")
+        %dd= f.text_field :login
+      %dl
+        %dt= label(:user, :name, "Имя")
+        %dd= f.text_field :name 
+      %dl
+        %dt= label(:user, :email, "E-mail")
+        %dd= f.text_field :email
+      %dl
+        %dt= label(:user, :password, "Пароль")
+        %dd= f.text_field :password
+      %dl
+        %dt= label(:user, :password_confirmation, "Подтверждение")
+        %dd= f.text_field :password_confirmation
+      %dl
+        %dt= label(:user, :created_at, "Создан")
+        %dd= f.text_field :created_at, :disabled => "disabled"
+      %dl
+        %dt= label(:user, :updated_at, "Обновлен")
+        %dd= f.text_field :updated_at, :disabled => "disabled"
+      = submit_tag("Редактировать")

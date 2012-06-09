@@ -1,0 +1,23 @@
+= title("Админка &#8594; Базы данных &#8594; Организации по тэгу " + @tag.name)
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2= "Организации по тэгу - #{@tag.name}"
+    - if @orgs.size > 0
+      %p= "Найдено <strong>#{@orgs.total_entries}</strong> #{Russian.p(@orgs.total_entries, "организация", "организации", "организаций")}"
+      %table#higlight_table
+        %colgroup
+          %col
+          %col{:width => "47%"}
+          %col{:width => "11%"}
+          %col{:width => "12%"}
+          %col{:width => "7%"}
+          %col{:width => "9%"}      
+          %col{:width => "9%"}
+        %tbody
+          = render :partial => "backend/orgs/org", :collection => @orgs
+      = will_paginate(@orgs, :class => "pagination round-bottom-10")
+    - else
+      %p С данным тэгом не ассоциирована ни одна организация

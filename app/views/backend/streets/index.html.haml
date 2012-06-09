@@ -1,0 +1,39 @@
+= title("Админка &#8594; Словари &#8594; Улицы")
+
+%div.container
+  = admin_menu("dictionaries")
+%div.container
+  %div.content    
+    %h2 Улицы
+    - if @streets.total_entries > 0
+      %p= "В словаре <strong>#{@streets.total_entries}</strong> #{Russian.p(@streets.total_entries, "улица", "улицы", "улиц")}"
+      %table#higlight_table
+        %colgroup
+          %col
+          %col{:width => "70%"}
+          %col{:width => "5%"}        
+          %col{:width => "10%"}
+          %col{:width => "10%"}
+        %tbody
+          - @streets.each do |street|
+            %tr
+              %td
+                %span= link_to "&nbsp;", edit_backend_street_path(street), :class => "edit", :title => "Редактировать улицу"
+                - if street.orgs.size == 0
+                  %span= link_to "&nbsp;", backend_street_path(street), :class => "delete", :title => "Удалить улицу", :method => "delete", :confirm => "Вы точно хотите удалить улицу?"
+              %td= link_to h(street.name), edit_backend_street_path(street), :title => "Редактировать улицу"
+              %td
+                %span.link= link_to street.orgs.size, backend_street_path(street), :title => "Организации по улице"
+              %td{:style => "text-align:right;"}
+                %span.date_create= Russian::strftime(street.created_at, "%d.%m.%Y")
+              %td{:style => "text-align:right;"}
+                %span.date_update= Russian::strftime(street.updated_at, "%d.%m.%Y")
+      = will_paginate(@streets)
+    - else
+      %p В словаре нет ни одной улицы
+    %div.separator
+    %div
+      %h3 Добавить улицу
+      - form_tag backend_streets_path, :method => "post" do
+        = text_field 'street', 'name'
+        = submit_tag("Добавить")

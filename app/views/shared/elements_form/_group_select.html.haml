@@ -1,0 +1,9 @@
+%select{:name => "activity"}
+  - @categories.root.children.each do |category|
+    %optgroup{:label => ""}
+      %option.optgroup{:value => category.id, :disabled => "disabled"}= category.name
+      - category.children.each do |subcategory|
+        - if subcategory.id == selected
+          %option{:value => subcategory.id, :selected => "selected"}= subcategory.name
+        - else
+          %option{:value => subcategory.id}= subcategory.name

@@ -1,0 +1,19 @@
+- title(h(@org.name) + ' &#8594; Телефоны &#8594; Редактирование')
+
+%div.container
+  %div.content.round-10    
+    %h2= h(@org.name)
+    = org_menu("phones")
+    %h3 Редактировать телефон
+    %p.help Внесите необходимые изменения и нажмите кнопку Редактировать, после чего данные будут отправлены на проверку Администратору. В случае успешного прохождения модерации изменения будут внесены в базу.
+    %div   
+      - form_for(:phone, @phone, :url => org_phone_path(:org_id => @org.id, :id => @phone.id), :html => {:method => "put"}) do |f|
+        %div#phones
+          %div.phone_row
+            %div.department.tip{:title => "Укажите, по желанию, названия отдела или должность владельца телефона"}
+              = text_field 'phone', 'department'
+            %div.number.tip{:title => "Телефон (без тире и длиной от 3 до 11 цифр)"}
+              = text_field 'phone', 'number'
+        %dl.button
+          %dt= submit_tag("Редактировать", :class => "button")
+          %dd= back_link(:back)

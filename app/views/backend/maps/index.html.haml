@@ -1,0 +1,24 @@
+= title("Админка &#8594; Базы данных &#8594; Организации &#8594; " + @org.name + " &#8594; Карта")
+
+- content_for(:javascript) do
+  = google_map_admin(@org.markers)
+
+%div.container
+  = admin_menu("databases")
+%div.container
+  %div.content    
+    %h2= @org.name
+    = admin_org_menu("maps")
+    %div#map{:style => "width: 916px; height: 400px; margin:15px 0 16px 0;"}
+    - @org.markers.each do |marker|
+      %div{:id => "marker_#{marker.id}", :style => "display:none;"}
+        = text_area_tag 'marker', marker.name
+        = submit_tag("Сохранить")
+    %div.separator
+    %div
+      %h3 Маркеры
+      %p.help Кликните по карте (чтобы добавить маркер) или переместите уже существующий и нажмите Сохранить
+      %div   
+        - form_tag create_org_maps_path(@org), :method => "post" do         
+          %div#markers   
+          = submit_tag("Сохранить")
